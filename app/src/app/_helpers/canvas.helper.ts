@@ -48,6 +48,8 @@ export class CanvasHelper{
 
         let origin = this.GetOrigin();
 
+        ctx.lineWidth = 1;
+
         //Draw vertical (x) lines
         for(let i = 0; i <= countLinesX; i++){
             ctx.beginPath();
@@ -62,8 +64,8 @@ export class CanvasHelper{
                 ctx.strokeStyle = "#e9e9e9";
             }
 
-            ctx.moveTo(i * this.widthPerStep * this.grid.stepSize + this.margin, 0);
-            ctx.lineTo(i * this.widthPerStep * this.grid.stepSize + this.margin, this.canvasHeight);
+            ctx.moveTo(i * this.widthPerStep * this.grid.stepSize + this.margin + 0.5, 0 + 0.5);
+            ctx.lineTo(i * this.widthPerStep * this.grid.stepSize + this.margin + 0.5, this.canvasHeight + 0.5);
             ctx.stroke();
         }
 
@@ -81,8 +83,8 @@ export class CanvasHelper{
                 ctx.strokeStyle = "#e9e9e9";
             }
 
-            ctx.moveTo(0 + this.margin, this.heightY * this.heightPerStep - (i * this.heightPerStep * this.grid.stepSize));
-            ctx.lineTo(this.canvasWidth,  this.heightY * this.heightPerStep - (i * this.heightPerStep * this.grid.stepSize));
+            ctx.moveTo(0 + this.margin + 0.5, this.heightY * this.heightPerStep - (i * this.heightPerStep * this.grid.stepSize) + 0.5);
+            ctx.lineTo(this.canvasWidth + 0.5,  this.heightY * this.heightPerStep - (i * this.heightPerStep * this.grid.stepSize) + 0.5);
             ctx.stroke();
         }
 
@@ -91,8 +93,8 @@ export class CanvasHelper{
             ctx.beginPath();
             ctx.strokeStyle = "#000000";
 
-            ctx.moveTo(i * this.widthPerStep + this.margin, this.canvasHeight - (origin.y * this.heightPerStep) + 3);
-            ctx.lineTo(i * this.widthPerStep + this.margin, this.canvasHeight - (origin.y * this.heightPerStep) - 3);
+            ctx.moveTo(i * this.widthPerStep + this.margin + 0.5, this.canvasHeight - (origin.y * this.heightPerStep) + 3 + 0.5);
+            ctx.lineTo(i * this.widthPerStep + this.margin + 0.5, this.canvasHeight - (origin.y * this.heightPerStep) - 3 + 0.5);
             ctx.stroke();
         }
 
@@ -101,10 +103,8 @@ export class CanvasHelper{
             ctx.beginPath();
             ctx.strokeStyle = "#000000";
 
-            console.log(origin.x * this.widthPerStep - 3, i * this.heightPerStep + this.margin);
-
-            ctx.moveTo(origin.x * this.widthPerStep - 3 + this.margin, this.canvasHeight - i * this.heightPerStep);
-            ctx.lineTo(origin.x * this.widthPerStep + 3 + this.margin, this.canvasHeight - i * this.heightPerStep);
+            ctx.moveTo(origin.x * this.widthPerStep - 3 + this.margin + 0.5, this.canvasHeight - i * this.heightPerStep + 0.5);
+            ctx.lineTo(origin.x * this.widthPerStep + 3 + this.margin + 0.5, this.canvasHeight - i * this.heightPerStep + 0.5);
             ctx.stroke();
         }
     }
