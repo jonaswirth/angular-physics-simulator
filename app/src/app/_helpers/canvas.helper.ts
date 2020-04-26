@@ -48,10 +48,6 @@ export class CanvasHelper{
 
         let origin = this.GetOrigin();
 
-        console.log(this.canvasWidth);
-        console.log(this.widthX * this.grid.stepSize);
-        console.log(countLinesX);
-
         //Draw vertical (x) lines
         for(let i = 0; i <= countLinesX; i++){
             ctx.beginPath();
@@ -87,6 +83,28 @@ export class CanvasHelper{
 
             ctx.moveTo(0 + this.margin, this.heightY * this.heightPerStep - (i * this.heightPerStep * this.grid.stepSize));
             ctx.lineTo(this.canvasWidth,  this.heightY * this.heightPerStep - (i * this.heightPerStep * this.grid.stepSize));
+            ctx.stroke();
+        }
+
+        // Draw ticks along the x axis
+        for(let i = 0; i < countLinesX;i++){
+            ctx.beginPath();
+            ctx.strokeStyle = "#000000";
+
+            ctx.moveTo(i * this.widthPerStep + this.margin, this.canvasHeight - (origin.y * this.heightPerStep) + 3);
+            ctx.lineTo(i * this.widthPerStep + this.margin, this.canvasHeight - (origin.y * this.heightPerStep) - 3);
+            ctx.stroke();
+        }
+
+        // Draw ticks along the y axis
+        for(let i = 0; i < countLinesY;i++){
+            ctx.beginPath();
+            ctx.strokeStyle = "#000000";
+
+            console.log(origin.x * this.widthPerStep - 3, i * this.heightPerStep + this.margin);
+
+            ctx.moveTo(origin.x * this.widthPerStep - 3 + this.margin, this.canvasHeight - i * this.heightPerStep);
+            ctx.lineTo(origin.x * this.widthPerStep + 3 + this.margin, this.canvasHeight - i * this.heightPerStep);
             ctx.stroke();
         }
     }
