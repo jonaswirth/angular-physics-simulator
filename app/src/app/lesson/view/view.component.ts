@@ -42,10 +42,7 @@ export class ViewComponent implements OnInit {
         from:0,
         to:100
       },
-      AxisY:{
-        from:0,
-        to: 100
-      },
+      AxisY:null,
       stepSize:1,
       highleightStep:5
     }

@@ -16,7 +16,7 @@ export class CanvasHelper{
     private heightPerStep:number;
 
     //Display
-    private margin:number = 5;
+    private margin:number = 25;
 
     constructor (width:number, height:number, grid:Grid){
         this.canvasWidth = width;
@@ -26,19 +26,34 @@ export class CanvasHelper{
     }
 
     private Initialize(){
-        this.widthX = this.grid.AxisX.to - this.grid.AxisX.from;
-        this.heightY = this.grid.AxisY.to - this.grid.AxisY.from;
 
+        if(this.grid.AxisX != null && this.grid.AxisY != null){
+            this.widthX = this.grid.AxisX.to - this.grid.AxisX.from;
+            this.heightY = this.grid.AxisY.to - this.grid.AxisY.from;
+
+            this.widthPerStep = this.canvasWidth / (this.widthX * this.grid.stepSize);
+            this.heightPerStep = this.canvasHeight / (this.heightY * this.grid.stepSize);
+        }
+        else if(this.grid.AxisX != null && this.grid.AxisY == null){
+            this.widthX = this.grid.AxisX.to - this.grid.AxisX.from;
+            this.widthPerStep = this.canvasWidth / (this.widthX * this.grid.stepSize);
+
+            this.heightPerStep = this.widthPerStep;
+            this.heightY = Math.round(this.canvasHeight / (this.heightPerStep * this.grid.stepSize));
+        }
+        else if(this.grid.AxisX == null && this.grid.AxisY != null){
+            throw Error("Currently not supported");
+        }
+        else{
+            throw Error("No axis defined");
+        }
         console.log("height: " + this.heightY + " width: " + this.widthX);
-
-        this.widthPerStep = this.canvasWidth / (this.widthX * this.grid.stepSize);
-        this.heightPerStep = this.canvasHeight / (this.heightY * this.grid.stepSize);
     }
 
     public GetOrigin():Position{
         return {
-            x:3,
-            y:3
+            x:0,
+            y:0
         };
     }
 
@@ -65,7 +80,7 @@ export class CanvasHelper{
             }
 
             ctx.moveTo(i * this.widthPerStep * this.grid.stepSize + this.margin + 0.5, 0 + 0.5);
-            ctx.lineTo(i * this.widthPerStep * this.grid.stepSize + this.margin + 0.5, this.canvasHeight + 0.5);
+            ctx.lineTo(i * this.widthPerStep * this.grid.stepSize + this.margin + 0.5, this.canvasHeight + 0.5 - this.margin);
             ctx.stroke();
         }
 
@@ -83,40 +98,40 @@ export class CanvasHelper{
                 ctx.strokeStyle = "#e9e9e9";
             }
 
-            ctx.moveTo(0 + this.margin + 0.5, this.heightY * this.heightPerStep - (i * this.heightPerStep * this.grid.stepSize) + 0.5);
-            ctx.lineTo(this.canvasWidth + 0.5,  this.heightY * this.heightPerStep - (i * this.heightPerStep * this.grid.stepSize) + 0.5);
+            ctx.moveTo(0 + this.margin + 0.5, this.heightY * this.heightPerStep - (i * this.heightPerStep * this.grid.stepSize) + 0.5 - this.margin);
+            ctx.lineTo(this.canvasWidth + 0.5,  this.heightY * this.heightPerStep - (i * this.heightPerStep * this.grid.stepSize) + 0.5 - this.margin);
             ctx.stroke();
         }
 
         // Draw ticks along the x axis
-        for(let i = 0; i < countLinesX;i++){
+        for(let i = 1; i < countLinesX;i++){
             ctx.beginPath();
             ctx.strokeStyle = "#000000";
 
-            ctx.moveTo(i * this.widthPerStep + this.margin + 0.5, this.canvasHeight - (origin.y * this.heightPerStep) + 3 + 0.5);
-            ctx.lineTo(i * this.widthPerStep + this.margin + 0.5, this.canvasHeight - (origin.y * this.heightPerStep) - 3 + 0.5);
+            ctx.moveTo(i * this.widthPerStep + this.margin + 0.5, this.canvasHeight - (origin.y * this.heightPerStep) + 3 + 0.5 - this.margin);
+            ctx.lineTo(i * this.widthPerStep + this.margin + 0.5, this.canvasHeight - (origin.y * this.heightPerStep) - 3 + 0.5 - this.margin);
             ctx.stroke();
 
-            if(i > 0 && i % 2 == 0){
+            if(i > 0 && i % 5 == 0){
             ctx.font = '8px Arial';
             ctx.textAlign = 'start';
-            ctx.fillText(String(i), (i + origin.x) * this.widthPerStep + this.margin - 2, this.canvasHeight - (origin.y * this.heightPerStep) + 10 + 0.5);
+            ctx.fillText(String(i), (i + origin.x) * this.widthPerStep + this.margin - 2, this.canvasHeight - (origin.y * this.heightPerStep) + 10 + 0.5 - this.margin);
             }
         }
 
         // Draw ticks along the y axis
-        for(let i = 0; i < countLinesY;i++){
+        for(let i = 1; i < countLinesY;i++){
             ctx.beginPath();
             ctx.strokeStyle = "#000000";
 
-            ctx.moveTo(origin.x * this.widthPerStep - 3 + this.margin + 0.5, this.canvasHeight - i * this.heightPerStep + 0.5);
-            ctx.lineTo(origin.x * this.widthPerStep + 3 + this.margin + 0.5, this.canvasHeight - i * this.heightPerStep + 0.5);
+            ctx.moveTo(origin.x * this.widthPerStep - 3 + this.margin + 0.5, this.canvasHeight - i * this.heightPerStep + 0.5 - this.margin);
+            ctx.lineTo(origin.x * this.widthPerStep + 3 + this.margin + 0.5, this.canvasHeight - i * this.heightPerStep + 0.5 - this.margin);
             ctx.stroke();
 
-            if(i > 0 && i % 2 == 0){
+            if(i > 0 && i % 5 == 0){
                 ctx.font = '8px Arial';
                 ctx.textAlign = 'start';
-                ctx.fillText(String(i), origin.x * this.widthPerStep - 13 + this.margin, this.canvasHeight - (i + origin.y) * this.heightPerStep + 2.5);
+                ctx.fillText(String(i), origin.x * this.widthPerStep - 13 + this.margin, this.canvasHeight - (i + origin.y) * this.heightPerStep + 2.5 - this.margin);
             }
         }
     }
