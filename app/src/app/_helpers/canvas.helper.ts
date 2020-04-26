@@ -57,7 +57,7 @@ export class CanvasHelper{
             if(i == origin.x){
                 ctx.strokeStyle = "#000000";
             }
-            else if(i % this.grid.highleightStep == 0){
+            else if((i - origin.x) % this.grid.highleightStep == 0){
                 ctx.strokeStyle = "#d1d1d1";
             }
             else{
@@ -76,7 +76,7 @@ export class CanvasHelper{
             if(i == origin.y){
                 ctx.strokeStyle = "#000000";
             }
-            else if(i % this.grid.highleightStep == 0){
+            else if((i - origin.y) % this.grid.highleightStep == 0){
                 ctx.strokeStyle = "#d1d1d1";
             }
             else{
@@ -96,6 +96,12 @@ export class CanvasHelper{
             ctx.moveTo(i * this.widthPerStep + this.margin + 0.5, this.canvasHeight - (origin.y * this.heightPerStep) + 3 + 0.5);
             ctx.lineTo(i * this.widthPerStep + this.margin + 0.5, this.canvasHeight - (origin.y * this.heightPerStep) - 3 + 0.5);
             ctx.stroke();
+
+            if(i > 0 && i % 2 == 0){
+            ctx.font = '8px Arial';
+            ctx.textAlign = 'start';
+            ctx.fillText(String(i), (i + origin.x) * this.widthPerStep + this.margin - 2, this.canvasHeight - (origin.y * this.heightPerStep) + 10 + 0.5);
+            }
         }
 
         // Draw ticks along the y axis
@@ -106,6 +112,12 @@ export class CanvasHelper{
             ctx.moveTo(origin.x * this.widthPerStep - 3 + this.margin + 0.5, this.canvasHeight - i * this.heightPerStep + 0.5);
             ctx.lineTo(origin.x * this.widthPerStep + 3 + this.margin + 0.5, this.canvasHeight - i * this.heightPerStep + 0.5);
             ctx.stroke();
+
+            if(i > 0 && i % 2 == 0){
+                ctx.font = '8px Arial';
+                ctx.textAlign = 'start';
+                ctx.fillText(String(i), origin.x * this.widthPerStep - 13 + this.margin, this.canvasHeight - (i + origin.y) * this.heightPerStep + 2.5);
+            }
         }
     }
 }
